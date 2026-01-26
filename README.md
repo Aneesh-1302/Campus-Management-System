@@ -25,6 +25,6 @@ This project provides a unified platform to manage campus events, role-based app
 ## Demo
 
 ## Team
-Frontend: Sushant Patil
-Backend: Aneesh A Srivattsa
-Deployment: Pratheek Shenoy
+- Frontend: Sushant Patil
+- Backend: Aneesh A Srivattsa
+- Deployment: Pratheek Shenoy
