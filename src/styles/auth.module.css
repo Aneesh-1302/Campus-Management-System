@@ -1,0 +1,11 @@
+.wrapper {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e6f7ee, #ffffff);
+}
+
+.card {
+  width: 380px;
+}
