@@ -1,39 +1,21 @@
-# Campus Management System – Backend
+# Campus-Management-System
+A unified campus platform that streamlines event management, role-based approvals, and resource booking
 
-## Tech Stack
-- Node.js
-- Express
-- MySQL
-- JWT
-- bcrypt
+## Problem Statement
+Campus events and shared resources are often managed using fragmented tools such as Google Forms, spreadsheets, and messaging apps. This leads to poor coordination, booking conflicts, and lack of accountability.
+This project provides a unified platform to manage campus events, role-based approvals, and conflict-free resource booking through a secure backend system.
 
-## Setup Instructions
+## Key Features
+- Role-based authentication (Admin, Organizer, Participant)
+- Event creation and approval workflow
+- Centralized campus resource management
+- Conflict-free resource booking system
+- Secure REST APIs
+- Transaction-safe booking approvals
 
-### 1. Install dependencies
-npm install
+## Demo
 
-### 2. Setup environment variables
-Create .env file with:
-DB_HOST=localhost
-DB_USER=campus_user
-DB_PASS=campus_password
-DB_NAME=campus_db
-JWT_SECRET=I'm Batman
-
-### 3. Setup Database
-mysql -u root -p < schema.sql
-mysql -u root -p < seed.sql
-
-### 4. Start Server
-npm run dev
-
-Server runs at:
-http://localhost:3000
-
-## Seeded Credentials
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@test.com | admin123 |
-| Organizer | organizer@test.com | org123 |
-| Participant | participant@test.com | user123 
+## Team
+- Frontend: Sushant Patil
+- Backend: Aneesh A Srivattsa
+- Deployment: Pratheek Shenoy
