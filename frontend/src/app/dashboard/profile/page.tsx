@@ -11,9 +11,15 @@ export default function ProfilePage() {
   const { user } = useAuth();
 
   const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
   const [loading, setLoading] = useState(false);
 
   const handleSave = async () => {
+    if (!name.trim() || !email.trim()) {
+      toast.error("Name and email are required");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -33,18 +39,30 @@ export default function ProfilePage() {
       <h2 style={{ marginBottom: "20px" }}>My Profile</h2>
 
       <Card>
-        <p><strong>Email:</strong> {user?.email}</p>
-        <p><strong>Role:</strong> {user?.designation}</p>
+        <p style={{ marginBottom: "8px" }}><strong>Role:</strong> <span style={{ textTransform: "capitalize" }}>{user?.designation}</span></p>
       </Card>
 
       <Card>
-        <h3>Edit Profile</h3>
+        <h3 style={{ marginBottom: "16px" }}>Edit Profile</h3>
 
-        <Input
-          placeholder="Full Name"
-          value={name}
-          onChange={(e: any) => setName(e.target.value)}
-        />
+        <div style={{ marginBottom: "12px" }}>
+          <label style={{ display: "block", marginBottom: "6px", fontSize: "14px", fontWeight: 500, color: "#555" }}>Full Name</label>
+          <Input
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e: any) => setName(e.target.value)}
+          />
+        </div>
+
+        <div style={{ marginBottom: "16px" }}>
+          <label style={{ display: "block", marginBottom: "6px", fontSize: "14px", fontWeight: 500, color: "#555" }}>Email Address</label>
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e: any) => setEmail(e.target.value)}
+          />
+        </div>
 
         <Button onClick={handleSave} disabled={loading}>
           {loading ? "Saving..." : "Save Changes"}
