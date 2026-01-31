@@ -22,10 +22,10 @@ This project provides a unified platform to manage campus events, role-based app
 ## Project Structure
 ```
 Campus-Management-System/
-├── campus-backend/       # Express API server
+├── campus-backend/       # Express API server  # SQL schema & seed files
 │   ├── src/
 │   │   ├── controllers/
-│   │   ├── db/           # SQL schema & seed files
+│   │   ├── db/           
 │   │   ├── middleware/
 │   │   └── routes/
 │   └── Dockerfile
