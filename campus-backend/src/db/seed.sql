@@ -1,25 +1,26 @@
 USE campus_db;
 
 -- USERS
+-- All passwords are: password123
 
 INSERT INTO users (name, email, password_hash, designation)
 VALUES 
 (
   'System Admin',
   'admin@test.com',
-  '$2b$10$6eCAi6py4b31pxTjMi3gsOLZZ8Ns90FdRobRKQ6J8mqZss25YDSJK',
+  '$2b$10$rf/HSU/ntStfOuvD6BGMxOx8s5brMwaPrSjEAa28cJJ.84Jr052Dm',
   'admin'
 ),
 (
   'Event Organizer',
   'organizer@test.com',
-  '$2b$10$tQsRG0lrQUDIPWwi05DsEe9YnLrWLK8Om1L9L6iViOIWx7fZ9WTTi',
+  '$2b$10$rf/HSU/ntStfOuvD6BGMxOx8s5brMwaPrSjEAa28cJJ.84Jr052Dm',
   'organizer'
 ),
 (
   'Test Participant',
   'participant@test.com',
-  '$2b$10$d6oSlyQ/ctpwCFmcSVRWAuCt5uzlUI1V2Kf2I4885Z9TjWjSTtjIW',
+  '$2b$10$rf/HSU/ntStfOuvD6BGMxOx8s5brMwaPrSjEAa28cJJ.84Jr052Dm',
   'participant'
 );
 
