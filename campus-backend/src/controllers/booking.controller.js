@@ -84,13 +84,13 @@ export const approveBooking = async (req, res) => {
 };
 
 /**
- * GET bookings (admin sees all, user sees own)
+ * GET bookings (admin sees all, others see own + all approved)
  */
 export const getBookings = async (req, res) => {
   try {
     let query = `
       SELECT b.id, b.event_name, b.start_time, b.end_time, b.status,
-             r.name AS resource_name
+             b.user_id, r.name AS resource_name
       FROM bookings b
       JOIN resources r ON b.resource_id = r.id
     `;
@@ -98,7 +98,8 @@ export const getBookings = async (req, res) => {
     const params = [];
 
     if (req.user.designation !== "admin") {
-      query += " WHERE b.user_id = ?";
+      // Non-admins see their own bookings + all approved events
+      query += " WHERE b.user_id = ? OR b.status = 'approved'";
       params.push(req.user.id);
     }
 

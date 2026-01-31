@@ -1,0 +1,99 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  # Test Backend
+  test-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: campus-backend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./campus-backend
+        run: npm ci
+      
+      - name: Check for syntax errors
+        working-directory: ./campus-backend
+        run: node --check src/server.js
+
+  # Test Frontend
+  test-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+      
+      - name: Lint
+        working-directory: ./frontend
+        run: npm run lint || true
+      
+      - name: Build
+        working-directory: ./frontend
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:5000
+        run: npm run build
+
+  # Build Docker Images
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    if: github.event_name == 'push'
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Backend Docker Image
+        working-directory: ./campus-backend
+        run: docker build -t campus-backend:latest .
+      
+      - name: Build Frontend Docker Image
+        working-directory: ./frontend
+        run: docker build --build-arg NEXT_PUBLIC_API_URL=http://localhost:5000 -t campus-frontend:latest .
+
+  # Deploy to Railway (uncomment and configure secrets)
+  # deploy-railway:
+  #   runs-on: ubuntu-latest
+  #   needs: [build-docker]
+  #   if: github.ref == 'refs/heads/main'
+  #   
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     
+  #     - name: Install Railway CLI
+  #       run: npm install -g @railway/cli
+  #     
+  #     - name: Deploy Backend
+  #       working-directory: ./campus-backend
+  #       env:
+  #         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  #       run: railway up --service campus-backend
+  #     
+  #     - name: Deploy Frontend
+  #       working-directory: ./frontend
+  #       env:
+  #         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  #       run: railway up --service campus-frontend

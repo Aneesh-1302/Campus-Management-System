@@ -1,0 +1,78 @@
+# Docker Compose for Campus Management System
+# For local development and testing with MySQL
+
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: campus-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-campus_db}
+      MYSQL_USER: ${DB_USER:-campus_user}
+      MYSQL_PASSWORD: ${DB_PASS:-campus_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./campus-backend/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./campus-backend/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - campus-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./campus-backend
+      dockerfile: Dockerfile
+    container_name: campus-backend
+    restart: unless-stopped
+    ports:
+      - "5001:3000"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=${DB_USER:-campus_user}
+      - DB_PASS=${DB_PASS:-campus_password}
+      - DB_NAME=${DB_NAME:-campus_db}
+      - PORT=3000
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key}
+      - FRONTEND_URL=http://localhost:3001
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - campus-network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:5001
+    container_name: campus-frontend
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - campus-network
+
+volumes:
+  mysql_data:
+
+networks:
+  campus-network:
+    driver: bridge

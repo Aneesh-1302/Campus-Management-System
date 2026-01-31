@@ -19,7 +19,7 @@ VALUES
 (
   'Test Participant',
   'participant@test.com',
-  '$2b$10$d6oSlyQ/ctpwCFmcSVRWAuCt5uzlUI1V2Kf2I4885Z9TjWjSTtjIW'
+  '$2b$10$d6oSlyQ/ctpwCFmcSVRWAuCt5uzlUI1V2Kf2I4885Z9TjWjSTtjIW',
   'participant'
 );
 
