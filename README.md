@@ -14,11 +14,11 @@ npm install
 
 ### 2. Setup environment variables
 Create .env file with:
-DB_HOST=localhost
-DB_USER=campus_user
-DB_PASS=campus_password
-DB_NAME=campus_db
-JWT_SECRET=I'm Batman
+- DB_HOST=localhost
+- DB_USER=campus_user
+- DB_PASS=campus_password
+- DB_NAME=campus_db
+- JWT_SECRET=I'm Batman
 
 ### 3. Setup Database
 mysql -u root -p < schema.sql
